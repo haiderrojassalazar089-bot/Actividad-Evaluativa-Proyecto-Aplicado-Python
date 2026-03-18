@@ -1,0 +1,35 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archivos generados por el cliente
+reporte_estadistico.csv
+encuestas.json
+encuestas.pkl
+
+# Variables de entorno
+.env
+.env.local
