@@ -41,12 +41,13 @@ import pickle
 import time
 from collections import Counter
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 from uuid import UUID
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 
 from models import (
     EncuestaCompleta,
@@ -103,7 +104,6 @@ def log_request(func: Callable) -> Callable:
     """
     @functools.wraps(func)
     async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        # Extraer el objeto Request de los kwargs de FastAPI
         request: Optional[Request] = kwargs.get("request")
         if request:
             logger.info(
@@ -160,7 +160,6 @@ async def manejador_validacion(
             "valor_recibido": str(error.get("input", "N/A"))[:100],
         })
 
-    # Log de auditoría: registra cada intento inválido
     logger.warning(
         "⚠️  VALIDACIÓN FALLIDA | Ruta: %s | Errores: %d | Campos: %s",
         request.url.path,
@@ -176,6 +175,23 @@ async def manejador_validacion(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=respuesta.model_dump(mode="json"),
     )
+
+
+# ══════════════════════════════════════════════════════════════
+# FRONTEND — Interfaz Web
+# ══════════════════════════════════════════════════════════════
+@app.get(
+    "/",
+    response_class=HTMLResponse,
+    tags=["Sistema"],
+    summary="Interfaz web",
+    description="Frontend del sistema de encuestas poblacionales.",
+    include_in_schema=True,
+)
+async def frontend() -> HTMLResponse:
+    """Sirve el frontend HTML del sistema de encuestas."""
+    html_path = Path(__file__).parent / "static" / "index.html"
+    return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
 # ══════════════════════════════════════════════════════════════
@@ -319,7 +335,6 @@ async def actualizar_encuesta(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Encuesta con ID '{id_str}' no encontrada.",
         )
-    # Preservar el ID original del path
     encuesta_con_id = encuesta_actualizada.model_copy(update={"id": id})
     repositorio[id_str] = encuesta_con_id
     logger.info("🔄 ACTUALIZACIÓN | ID: %s", id_str)
