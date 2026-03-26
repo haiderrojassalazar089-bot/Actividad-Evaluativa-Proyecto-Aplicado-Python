@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Encuestas Poblacionales · Colombia 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0c0c14; --ink2:#1a1a2e; --ink3:#2d2d4e;
+  --paper:#faf9f6; --paper2:#f2efe8; --paper3:#e8e3d8;
+  --gold:#c9973a; --gold2:#e8b84b; --gold3:#f5d080;
+  --teal:#0d7377; --teal2:#14a085; --teal3:#1abc9c;
+  --rose:#c0392b; --rose2:#e74c3c;
+  --violet:#6c3483; --violet2:#8e44ad;
+  --muted:#7a746e; --border:#ddd8ce; --border2:#ece7de;
+  --white:#ffffff;
+  --shadow-sm:0 2px 8px rgba(12,12,20,0.06);
+  --shadow:0 4px 24px rgba(12,12,20,0.09);
+  --shadow-lg:0 16px 56px rgba(12,12,20,0.14);
+  --shadow-xl:0 32px 80px rgba(12,12,20,0.2);
+  --mono:'DM Mono',monospace;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --r:6px; --r-lg:14px; --r-xl:20px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:999;
+  background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  height:60px;padding:0 40px;
+  display:flex;align-items:center;gap:0;
+}
+.tb-brand{display:flex;align-items:center;gap:14px;margin-right:auto}
+.tb-seal{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;font-size:1em;
+  box-shadow:0 0 12px rgba(201,151,58,0.4);
+}
+.tb-name{font-family:var(--serif);font-size:0.92em;color:white;font-weight:700;letter-spacing:0.01em}
+.tb-sub{font-size:0.6em;color:rgba(255,255,255,0.38);letter-spacing:0.1em;text-transform:uppercase;font-weight:300}
+.tb-nav{display:flex;gap:4px}
+.tb-btn{
+  font-size:0.72em;font-weight:500;color:rgba(255,255,255,0.55);
+  background:none;border:none;padding:7px 14px;border-radius:var(--r);
+  cursor:pointer;transition:all 0.18s;letter-spacing:0.02em;
+}
+.tb-btn:hover,.tb-btn.on{color:white;background:rgba(255,255,255,0.08)}
+.tb-btn.on{color:var(--gold2)}
+.tb-status{
+  margin-left:16px;font-family:var(--mono);font-size:0.62em;
+  padding:4px 12px;border-radius:20px;
+  border:1px solid rgba(20,160,133,0.35);
+  color:var(--teal2);background:rgba(13,115,119,0.12);
+  transition:all 0.3s;
+}
+.tb-status.offline{color:var(--rose);border-color:rgba(192,57,43,0.35);background:rgba(192,57,43,0.1)}
+
+/* ── HERO ── */
+.hero{
+  background:var(--ink2);
+  padding:72px 48px 64px;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.028) 1px,transparent 1px);
+  background-size:44px 44px;
+  pointer-events:none;
+}
+.hero-glow{
+  position:absolute;top:-120px;right:-80px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,151,58,0.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;bottom:-100px;left:5%;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(13,115,119,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-inner{max-width:860px;position:relative;z-index:1}
+.hero-eye{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:0.68em;color:var(--gold);
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:22px;
+}
+.hero-eye::before{content:'';width:28px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:var(--serif);font-size:3.4em;color:white;
+  line-height:1.07;margin-bottom:18px;font-weight:900;
+}
+.hero h1 i{font-style:italic;color:var(--gold2)}
+.hero-p{
+  font-size:0.98em;color:rgba(255,255,255,0.5);
+  font-weight:300;line-height:1.78;max-width:540px;margin-bottom:44px;
+}
+.hero-kpis{
+  display:flex;gap:0;
+  border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-lg);
+  overflow:hidden;width:fit-content;
+}
+.kpi{padding:18px 28px;border-right:1px solid rgba(255,255,255,0.08);text-align:center;min-width:110px}
+.kpi:last-child{border-right:none}
+.kpi-v{font-family:var(--serif);font-size:1.9em;color:var(--gold2);line-height:1;margin-bottom:3px;font-weight:700}
+.kpi-l{font-size:0.63em;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;font-weight:500}
+
+/* ── TAB LAYOUT ── */
+.tabs-bar{
+  background:var(--ink3);border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 48px;display:flex;gap:0;
+}
+.tab{
+  font-size:0.76em;font-weight:600;letter-spacing:0.04em;
+  color:rgba(255,255,255,0.38);background:none;border:none;
+  padding:14px 22px;cursor:pointer;transition:all 0.18s;
+  border-bottom:2px solid transparent;position:relative;top:1px;
+}
+.tab:hover{color:rgba(255,255,255,0.7)}
+.tab.on{color:var(--gold2);border-bottom-color:var(--gold2)}
+
+/* ── MAIN GRID ── */
+.app-body{max-width:1340px;margin:0 auto;padding:40px 48px 80px}
+.main-grid{display:grid;grid-template-columns:1fr 400px;gap:36px;align-items:start}
+
+/* ── SECTION HEADERS ── */
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.sh-badge{
+  font-family:var(--mono);font-size:0.6em;font-weight:500;
+  padding:3px 9px;border-radius:3px;letter-spacing:0.04em;
+}
+.sh-badge.post{background:rgba(20,160,133,0.15);color:var(--teal2);border:1px solid rgba(20,160,133,0.2)}
+.sh-badge.get{background:rgba(201,151,58,0.12);color:var(--gold);border:1px solid rgba(201,151,58,0.2)}
+.sh-badge.del{background:rgba(192,57,43,0.1);color:var(--rose);border:1px solid rgba(192,57,43,0.2)}
+.sh-title{font-family:var(--serif);font-size:1.35em;color:var(--ink2)}
+.sh-line{flex:1;height:1px;background:var(--border2)}
+
+/* ── CARD ── */
+.card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);
+}
+.card-head{
+  background:var(--ink2);padding:18px 26px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-head-title{font-family:var(--serif);font-size:0.98em;color:white;font-weight:700}
+.card-head-badge{
+  font-family:var(--mono);font-size:0.6em;
+  color:var(--teal2);background:rgba(20,160,133,0.15);
+  border:1px solid rgba(20,160,133,0.25);padding:3px 10px;border-radius:20px;
+}
+.card-body{padding:26px}
+
+/* ── FORM ELEMENTS ── */
+.fsec{
+  font-size:0.67em;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.13em;
+  padding-bottom:10px;border-bottom:1px solid var(--border2);margin-bottom:16px;
+}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.fg label{font-size:0.72em;font-weight:600;color:var(--ink2);letter-spacing:0.04em;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{
+  font-family:var(--sans);font-size:0.86em;color:var(--ink);
+  background:var(--paper);border:1px solid var(--border);
+  border-radius:var(--r);padding:10px 13px;transition:all 0.18s;outline:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--teal);background:white;
+  box-shadow:0 0 0 3px rgba(13,115,119,0.1);
+}
+.fg input::placeholder,.fg textarea::placeholder{color:#bfb8af}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fdiv{border:none;border-top:1px dashed var(--border2);margin:20px 0}
+
+/* ── QUESTION CARDS ── */
+.qs-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.qcard{
+  background:var(--paper);border:1px solid var(--border2);
+  border-radius:var(--r);padding:14px 16px;
+  transition:border-color 0.2s;
+}
+.qcard:hover{border-color:var(--border)}
+.qcard-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.qn{
+  font-family:var(--mono);font-size:0.62em;font-weight:500;
+  color:white;background:var(--teal);padding:2px 8px;border-radius:3px;
+}
+.qtbadge{font-family:var(--mono);font-size:0.6em;padding:2px 8px;border-radius:3px;font-weight:500}
+.qtb-likert{background:rgba(13,115,119,0.1);color:var(--teal)}
+.qtb-porcentaje{background:rgba(201,151,58,0.1);color:var(--gold)}
+.qtb-abierta{background:rgba(192,57,43,0.1);color:var(--rose)}
+.qtb-binaria{background:rgba(108,99,255,0.1);color:var(--violet2)}
+.qcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qcard .fg{margin-bottom:0}
+.qcard .fg input,.qcard .fg select{font-size:0.82em;padding:8px 11px}
+.qcard .fg label{font-size:0.65em}
+
+/* ── ADD Q BTN ── */
+.btn-addq{
+  width:100%;padding:11px;margin-bottom:18px;
+  background:none;border:1px dashed var(--border);border-radius:var(--r);
+  font-family:var(--sans);font-size:0.78em;color:var(--muted);
+  cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-addq:hover{border-color:var(--teal);color:var(--teal);background:rgba(13,115,119,0.04)}
+
+/* ── SUBMIT ── */
+.btn-sub{
+  width:100%;padding:15px 24px;
+  background:var(--ink2);color:white;border:none;border-radius:var(--r);
+  font-family:var(--serif);font-size:1em;font-style:italic;
+  cursor:pointer;transition:all 0.22s;position:relative;overflow:hidden;
+}
+.btn-sub::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--teal2),var(--gold));
+  transform:scaleX(0);transition:transform 0.35s;
+}
+.btn-sub:hover{background:var(--ink3)}
+.btn-sub:hover::after{transform:scaleX(1)}
+.btn-sub:disabled{opacity:0.5;cursor:not-allowed}
+.btn-sub:disabled::after{transform:none}
+
+/* ── ERROR BOX ── */
+.err-box{
+  display:none;margin-top:10px;
+  background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.18);
+  border-radius:var(--r);padding:12px 15px;
+  font-size:0.78em;color:var(--rose);line-height:1.7;white-space:pre-line;
+}
+
+/* ── RIGHT PANEL ── */
+.rp{display:flex;flex-direction:column;gap:22px}
+
+/* ── STAT CARDS ── */
+.stats4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scard{
+  background:white;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:18px 20px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.scard.c1::before{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.scard.c2::before{background:linear-gradient(90deg,var(--teal),var(--teal2))}
+.scard.c3::before{background:linear-gradient(90deg,var(--ink2),var(--ink3))}
+.scard.c4::before{background:linear-gradient(90deg,var(--violet),var(--violet2))}
+.scard-v{font-family:var(--serif);font-size:2em;color:var(--ink2);line-height:1;margin-bottom:4px;font-weight:700}
+.scard-l{font-size:0.65em;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.scard-ico{position:absolute;top:14px;right:14px;font-size:1.4em;opacity:0.12}
+
+/* ── DIST ── */
+.dist-panel{
+  background:white;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:22px;box-shadow:var(--shadow-sm);
+}
+.dp-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border2);
+}
+.dp-t{font-family:var(--serif);font-size:1em;color:var(--ink2)}
+.dp-sub{font-family:var(--mono);font-size:0.6em;color:var(--muted)}
+.drow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.drow:last-child{margin-bottom:0}
+.dlabel{font-size:0.72em;color:var(--muted);font-weight:600;width:88px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dbar-w{flex:1;height:7px;background:var(--paper2);border-radius:4px;overflow:hidden}
+.dbar{height:100%;border-radius:4px;transition:width 0.9s cubic-bezier(.4,0,.2,1)}
+.dbar.teal{background:linear-gradient(90deg,var(--teal),var(--teal2))}
+.dbar.gold{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.dcnt{font-family:var(--mono);font-size:0.68em;color:var(--muted);width:18px;text-align:right}
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.empty-i{font-size:2em;opacity:0.3;margin-bottom:8px}
+.empty-t{font-size:0.8em;line-height:1.6}
+
+/* ── LIST ── */
+.list-wrap{margin-top:40px}
+.enc-list{display:flex;flex-direction:column;gap:10px}
+.enc-item{
+  background:white;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:20px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;
+  align-items:center;box-shadow:var(--shadow-sm);transition:all 0.18s;
+  animation:fadeUp 0.3s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.enc-item:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.enc-name{font-family:var(--serif);font-size:1.05em;color:var(--ink2);margin-bottom:6px}
+.enc-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{
+  font-family:var(--mono);font-size:0.64em;color:var(--muted);
+  background:var(--paper2);padding:3px 9px;border-radius:20px;
+}
+.chip.teal{color:var(--teal);background:rgba(13,115,119,0.08)}
+.chip.gold{color:var(--gold);background:rgba(201,151,58,0.08)}
+.chip.violet{color:var(--violet2);background:rgba(142,68,173,0.08)}
+.enc-acts{display:flex;gap:6px}
+.ibtn{
+  width:34px;height:34px;border-radius:var(--r);
+  border:1px solid var(--border);background:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:0.85em;transition:all 0.18s;color:var(--muted);
+}
+.ibtn.eye:hover{border-color:var(--teal);color:var(--teal);background:rgba(13,115,119,0.06)}
+.ibtn.del:hover{border-color:var(--rose);color:var(--rose);background:rgba(192,57,43,0.06)}
+
+/* ── TOAST ── */
+.toasts{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{
+  background:var(--ink2);color:white;padding:13px 18px;
+  border-radius:var(--r-lg);font-size:0.82em;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow-lg);max-width:300px;
+  animation:tIn 0.25s ease both;
+}
+.toast.ok{border-left:3px solid var(--teal2)}
+.toast.err{border-left:3px solid var(--rose)}
+.toast.warn{border-left:3px solid var(--gold2)}
+@keyframes tIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── MODAL ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(12,12,20,0.72);
+  z-index:2000;display:flex;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-box{
+  background:white;border-radius:var(--r-xl);
+  max-width:620px;width:100%;max-height:82vh;overflow-y:auto;
+  box-shadow:var(--shadow-xl);transform:translateY(14px);transition:transform 0.22s;
+}
+.modal-bg.open .modal-box{transform:translateY(0)}
+.mhead{
+  background:var(--ink2);padding:20px 24px;
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:1;
+}
+.mhead-title{font-family:var(--serif);color:white;font-size:1.05em}
+.mclose{background:none;border:none;color:rgba(255,255,255,0.45);font-size:1.2em;cursor:pointer;transition:color 0.15s}
+.mclose:hover{color:white}
+.mbody{padding:24px}
+.mrow{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--border2);font-size:0.86em}
+.mrow:last-child{border-bottom:none}
+.mk{font-weight:700;color:var(--muted);width:130px;flex-shrink:0;font-size:0.82em;text-transform:uppercase;letter-spacing:0.05em;padding-top:1px}
+.mv{color:var(--ink);line-height:1.6}
+.msec{font-size:0.67em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;padding:14px 0 10px;border-bottom:1px solid var(--border2);margin-bottom:4px}
+
+/* ── FOOTER ── */
+.foot{
+  background:var(--ink2);border-top:2px solid var(--gold);
+  padding:28px 48px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+.foot-l{font-family:var(--serif);font-size:0.85em;color:rgba(255,255,255,0.38);font-style:italic}
+.foot-links{display:flex;gap:8px;flex-wrap:wrap}
+.flink{
+  font-family:var(--mono);font-size:0.65em;color:rgba(255,255,255,0.38);
+  text-decoration:none;padding:4px 11px;
+  border:1px solid rgba(255,255,255,0.1);border-radius:3px;transition:all 0.18s;
+}
+.flink:hover{color:var(--gold2);border-color:var(--gold)}
+
+/* ── SPINNER ── */
+.spin{
+  width:16px;height:16px;border:2px solid rgba(255,255,255,0.25);
+  border-top-color:white;border-radius:50%;
+  animation:ro 0.55s linear infinite;display:inline-block;vertical-align:middle;
+}
+@keyframes ro{to{transform:rotate(360deg)}}
+
+/* ── PANELS ── */
+.panel{display:none}
+.panel.on{display:block}
+
+/* ── UTIL ── */
+.hidden{display:none!important}
+.mt12{margin-top:12px}
+
+/* ── VALIDATION STATUS BADGE ── */
+.val-ok{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:0.65em;color:var(--teal2);
+  background:rgba(20,160,133,0.1);border:1px solid rgba(20,160,133,0.2);
+  padding:4px 10px;border-radius:20px;margin-top:8px;
+}
+.val-err{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:0.65em;color:var(--rose);
+  background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.18);
+  padding:4px 10px;border-radius:20px;margin-top:8px;
+}
+
+/* ── PUNTAJE VISUAL ── */
+.likert-stars{display:flex;gap:4px;margin-top:4px}
+.star{font-size:1.1em;cursor:pointer;transition:transform 0.15s;filter:grayscale(1);opacity:0.3}
+.star.on{filter:none;opacity:1;transform:scale(1.1)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="tb-brand">
+    <div class="tb-seal">🗳️</div>
+    <div>
+      <div class="tb-name">Sistema de Encuestas Poblacionales</div>
+      <div class="tb-sub">Colombia · 2026 · FastAPI + Pydantic V2</div>
+    </div>
+  </div>
+  <nav class="tb-nav">
+    <button class="tb-btn on" onclick="showTab('registro')">📝 Registrar</button>
+    <button class="tb-btn" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <button class="tb-btn" onclick="showTab('listado')">📋 Listado</button>
+    <a href="/docs" target="_blank" style="font-family:var(--mono);font-size:0.65em;color:rgba(255,255,255,0.4);text-decoration:none;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:3px;transition:all 0.18s;margin-left:8px" onmouseover="this.style.color='var(--gold2)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">API /docs ↗</a>
+  </nav>
+  <span class="tb-status" id="api-status">● Conectando...</span>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-eye">Pipeline de Ingesta Estadística · Colombia 2026</div>
+    <h1>Recolección y Validación<br>de Datos <i>Demográficos</i></h1>
+    <p class="hero-p">Sistema de encuestas poblacionales con validación estadística rigurosa mediante Pydantic V2. Cada registro pasa por una "aduana transaccional" que garantiza la integridad antes del análisis. Los datos inválidos son rechazados con HTTP 422 antes de contaminar el repositorio.</p>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-v" id="kpi-total">0</div><div class="kpi-l">Encuestas</div></div>
+      <div class="kpi"><div class="kpi-v" id="kpi-edad">—</div><div class="kpi-l">Edad prom.</div></div>
+      <div class="kpi"><div class="kpi-v">32</div><div class="kpi-l">Departamentos</div></div>
+      <div class="kpi"><div class="kpi-v">4</div><div class="kpi-l">Tipos pregunta</div></div>
+      <div class="kpi"><div class="kpi-v" id="kpi-email">0%</div><div class="kpi-l">Con email</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS BAR -->
+<div class="tabs-bar">
+  <button class="tab on" id="tab-registro" onclick="showTab('registro')">Registrar Encuesta</button>
+  <button class="tab" id="tab-dashboard" onclick="showTab('dashboard')">Dashboard Estadístico</button>
+  <button class="tab" id="tab-listado" onclick="showTab('listado')">Listado Completo</button>
+</div>
+
+<!-- ════════════ PANEL: REGISTRO ════════════ -->
+<div class="app-body">
+<div class="panel on" id="panel-registro">
+  <div class="main-grid">
+
+    <!-- FORM -->
+    <div>
+      <div class="sh">
+        <span class="sh-badge post">POST /encuestas/</span>
+        <h2 class="sh-title">Nueva Encuesta</h2>
+        <div class="sh-line"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">Encuesta Poblacional — Datos Demográficos + Respuestas</span>
+          <span class="card-head-badge">application/json · Pydantic V2</span>
+        </div>
+        <div class="card-body">
+
+          <div class="fg">
+            <label>Nombre de la Encuesta</label>
+            <input type="text" id="f-encuesta" placeholder="Ej: Encuesta de Calidad de Vida 2026"/>
+          </div>
+
+          <div class="fsec" style="margin-top:6px">Datos del Encuestado</div>
+
+          <div class="grid2">
+            <div class="fg"><label>Nombre Completo *</label><input type="text" id="f-nombre" placeholder="Ej: María García López"/></div>
+            <div class="fg"><label>Edad * (0–120)</label><input type="number" id="f-edad" min="0" max="120" placeholder="34"/></div>
+          </div>
+          <div class="grid2">
+            <div class="fg">
+              <label>Estrato DANE * (1–6)</label>
+              <select id="f-estrato">
+                <option value="">— Seleccione —</option>
+                <option value="1">Estrato 1 · Bajo-bajo</option>
+                <option value="2">Estrato 2 · Bajo</option>
+                <option value="3">Estrato 3 · Medio-bajo</option>
+                <option value="4">Estrato 4 · Medio</option>
+                <option value="5">Estrato 5 · Medio-alto</option>
+                <option value="6">Estrato 6 · Alto</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Departamento *</label>
+              <select id="f-depto">
+                <option value="">— Seleccione —</option>
+                <option>Amazonas</option><option>Antioquia</option><option>Arauca</option>
+                <option>Atlántico</option><option>Bogotá D.C.</option><option>Bolívar</option>
+                <option>Boyacá</option><option>Caldas</option><option>Caquetá</option>
+                <option>Casanare</option><option>Cauca</option><option>Cesar</option>
+                <option>Chocó</option><option>Córdoba</option><option>Cundinamarca</option>
+                <option>Guainía</option><option>Guaviare</option><option>Huila</option>
+                <option>La Guajira</option><option>Magdalena</option><option>Meta</option>
+                <option>Nariño</option><option>Norte de Santander</option><option>Putumayo</option>
+                <option>Quindío</option><option>Risaralda</option>
+                <option>San Andrés y Providencia</option><option>Santander</option>
+                <option>Sucre</option><option>Tolima</option>
+                <option>Valle del Cauca</option><option>Vaupés</option><option>Vichada</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid3">
+            <div class="fg">
+              <label>Género</label>
+              <select id="f-genero">
+                <option value="">No especificado</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="no binario">No binario</option>
+                <option value="prefiero no decir">Prefiero no decir</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Nivel Educativo</label>
+              <select id="f-edu">
+                <option value="">No especificado</option>
+                <option value="ninguno">Ninguno</option>
+                <option value="primaria">Primaria</option>
+                <option value="secundaria">Secundaria</option>
+                <option value="técnico">Técnico</option>
+                <option value="tecnólogo">Tecnólogo</option>
+                <option value="universitario">Universitario</option>
+                <option value="posgrado">Posgrado</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Email</label>
+              <input type="email" id="f-email" placeholder="correo@ejemplo.co"/>
+            </div>
+          </div>
+
+          <hr class="fdiv"/>
+          <div class="fsec">Respuestas de la Encuesta</div>
+
+          <div class="qs-wrap" id="qs-wrap"></div>
+
+          <button class="btn-addq" onclick="addQ()">
+            <span style="font-size:1.1em">＋</span> Añadir pregunta
+          </button>
+
+          <button class="btn-sub" id="btn-sub" onclick="submitEncuesta()">
+            Registrar Encuesta en el Sistema
+          </button>
+
+          <div class="err-box" id="err-box"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="rp">
+      <div>
+        <div class="sh">
+          <span class="sh-badge get">GET /estadisticas/</span>
+          <h2 class="sh-title">Resumen</h2>
+          <div class="sh-line"></div>
+        </div>
+        <div class="stats4">
+          <div class="scard c1"><div class="scard-ico">📋</div><div class="scard-v" id="s-total">0</div><div class="scard-l">Encuestas</div></div>
+          <div class="scard c2"><div class="scard-ico">🎂</div><div class="scard-v" id="s-edad">—</div><div class="scard-l">Edad prom.</div></div>
+          <div class="scard c3"><div class="scard-ico">🗺️</div><div class="scard-v" id="s-depts">0</div><div class="scard-l">Deptos.</div></div>
+          <div class="scard c4"><div class="scard-ico">📧</div><div class="scard-v" id="s-email">0%</div><div class="scard-l">Con email</div></div>
+        </div>
+      </div>
+
+      <div class="dist-panel">
+        <div class="dp-title">
+          <span class="dp-t">Distribución por Estrato</span>
+          <span class="dp-sub">DANE 1–6</span>
+        </div>
+        <div id="d-estrato"><div class="empty"><div class="empty-i">📊</div><div class="empty-t">Sin datos aún</div></div></div>
+      </div>
+
+      <div class="dist-panel">
+        <div class="dp-title">
+          <span class="dp-t">Top Departamentos</span>
+          <span class="dp-sub">por frecuencia</span>
+        </div>
+        <div id="d-depto"><div class="empty"><div class="empty-i">🗺️</div><div class="empty-t">Sin datos aún</div></div></div>
+      </div>
+
+      <div class="dist-panel">
+        <div class="dp-title">
+          <span class="dp-t">Distribución por Género</span>
+          <span class="dp-sub">auto-reportado</span>
+        </div>
+        <div id="d-genero"><div class="empty"><div class="empty-i">👥</div><div class="empty-t">Sin datos aún</div></div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end panel-registro -->
+
+<!-- ════════════ PANEL: DASHBOARD ════════════ -->
+<div class="panel" id="panel-dashboard">
+  <div class="sh">
+    <span class="sh-badge get">GET /estadisticas/</span>
+    <h2 class="sh-title">Dashboard Estadístico</h2>
+    <div class="sh-line"></div>
+    <button onclick="loadData()" style="font-family:var(--mono);font-size:0.68em;color:var(--teal);background:rgba(13,115,119,0.08);border:1px solid rgba(13,115,119,0.2);padding:6px 14px;border-radius:3px;cursor:pointer;">↻ Actualizar</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px">
+    <div class="scard c1" style="padding:22px 24px"><div class="scard-ico">📋</div><div class="scard-v" id="d-total">0</div><div class="scard-l">Total Encuestas</div></div>
+    <div class="scard c2" style="padding:22px 24px"><div class="scard-ico">🎂</div><div class="scard-v" id="d-edad">—</div><div class="scard-l">Promedio de Edad</div></div>
+    <div class="scard c3" style="padding:22px 24px"><div class="scard-ico">🗺️</div><div class="scard-v" id="d-depts2">0</div><div class="scard-l">Departamentos</div></div>
+    <div class="scard c4" style="padding:22px 24px"><div class="scard-ico">📧</div><div class="scard-v" id="d-email2">0%</div><div class="scard-l">Completitud Email</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+    <div class="dist-panel">
+      <div class="dp-title"><span class="dp-t">Por Estrato</span><span class="dp-sub">DANE</span></div>
+      <div id="dd-estrato"><div class="empty"><div class="empty-i">📊</div><div class="empty-t">Sin datos</div></div></div>
+    </div>
+    <div class="dist-panel">
+      <div class="dp-title"><span class="dp-t">Por Departamento</span><span class="dp-sub">Top 8</span></div>
+      <div id="dd-depto"><div class="empty"><div class="empty-i">🗺️</div><div class="empty-t">Sin datos</div></div></div>
+    </div>
+    <div class="dist-panel">
+      <div class="dp-title"><span class="dp-t">Por Género</span><span class="dp-sub">auto-reportado</span></div>
+      <div id="dd-genero"><div class="empty"><div class="empty-i">👥</div><div class="empty-t">Sin datos</div></div></div>
+    </div>
+  </div>
+</div><!-- end panel-dashboard -->
+
+<!-- ════════════ PANEL: LISTADO ════════════ -->
+<div class="panel" id="panel-listado">
+  <div class="sh">
+    <span class="sh-badge get">GET /encuestas/</span>
+    <h2 class="sh-title">Encuestas Registradas</h2>
+    <div class="sh-line"></div>
+    <button onclick="loadEncuestas()" style="font-family:var(--mono);font-size:0.68em;color:var(--teal);background:rgba(13,115,119,0.08);border:1px solid rgba(13,115,119,0.2);padding:6px 14px;border-radius:3px;cursor:pointer;">↻ Actualizar</button>
+  </div>
+
+  <!-- Search / Filter -->
+  <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+    <input type="text" id="search-q" placeholder="🔍  Buscar por nombre, departamento..." oninput="filterList()" style="flex:1;font-family:var(--sans);font-size:0.84em;padding:10px 14px;border:1px solid var(--border);border-radius:var(--r);background:white;outline:none;min-width:200px"/>
+    <select id="filter-depto" onchange="filterList()" style="font-family:var(--sans);font-size:0.82em;padding:10px 13px;border:1px solid var(--border);border-radius:var(--r);background:white;outline:none">
+      <option value="">Todos los departamentos</option>
+      <option>Amazonas</option><option>Antioquia</option><option>Arauca</option>
+      <option>Atlántico</option><option>Bogotá D.C.</option><option>Bolívar</option>
+      <option>Boyacá</option><option>Caldas</option><option>Cundinamarca</option>
+      <option>Valle del Cauca</option><option>Santander</option><option>Antioquia</option>
+    </select>
+    <select id="filter-estrato" onchange="filterList()" style="font-family:var(--sans);font-size:0.82em;padding:10px 13px;border:1px solid var(--border);border-radius:var(--r);background:white;outline:none">
+      <option value="">Todos los estratos</option>
+      <option value="1">Estrato 1</option><option value="2">Estrato 2</option>
+      <option value="3">Estrato 3</option><option value="4">Estrato 4</option>
+      <option value="5">Estrato 5</option><option value="6">Estrato 6</option>
+    </select>
+  </div>
+
+  <div class="enc-list" id="enc-list">
+    <div class="empty" style="background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:60px">
+      <div class="empty-i">📭</div>
+      <div class="empty-t">No hay encuestas registradas.<br>Ve a "Registrar" para agregar la primera.</div>
+    </div>
+  </div>
+</div><!-- end panel-listado -->
+
+</div><!-- app-body -->
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-l">Sistema de Encuestas Poblacionales · Colombia 2026 · FastAPI + Pydantic V2</div>
+  <div class="foot-links">
+    <a href="/docs" target="_blank" class="flink">Swagger UI ↗</a>
+    <a href="/redoc" target="_blank" class="flink">Redoc ↗</a>
+    <a href="/encuestas/estadisticas/" target="_blank" class="flink">API Stats ↗</a>
+    <a href="/encuestas/exportar/json" target="_blank" class="flink">Export JSON ↗</a>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toasts" id="toasts"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="mhead">
+      <span class="mhead-title" id="m-title">Detalle de Encuesta</span>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mbody" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const API = '';
+let allEncuestas = [];
+let qCount = 0;
+const COLORS_TEAL = ['teal','teal','teal','teal','teal','teal'];
+const COLORS_GOLD = ['gold','gold','gold','gold','gold','gold'];
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+function showTab(name) {
+  ['registro','dashboard','listado'].forEach(t => {
+    document.getElementById(`panel-${t}`).classList.toggle('on', t===name);
+    document.getElementById(`tab-${t}`).classList.toggle('on', t===name);
+  });
+  if (name==='dashboard') renderDashboard();
+  if (name==='listado') loadEncuestas();
+}
+
+// ═══════════════════════════════════════════
+// QUESTIONS
+// ═══════════════════════════════════════════
+function addQ() {
+  qCount++;
+  const wrap = document.getElementById('qs-wrap');
+  const d = document.createElement('div');
+  d.className = 'qcard'; d.id = `q-${qCount}`;
+  d.innerHTML = `
+    <div class="qcard-top">
+      <span class="qn">P${String(qCount).padStart(2,'0')}</span>
+      <select id="qt-${qCount}" onchange="changeQType(${qCount},this.value)" style="font-family:var(--mono);font-size:0.65em;padding:3px 8px;border-radius:3px;border:1px solid var(--border);background:var(--paper2);cursor:pointer">
+        <option value="likert">Likert (1–5)</option>
+        <option value="porcentaje">Porcentaje (0–100)</option>
+        <option value="abierta">Abierta (texto)</option>
+        <option value="binaria">Binaria (Sí/No)</option>
+      </select>
+      <span class="qtbadge qtb-likert" id="qb-${qCount}">likert</span>
+      <button onclick="removeQ(${qCount})" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.05em;padding:0 4px;transition:color 0.15s" onmouseover="this.style.color='var(--rose)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+    </div>
+    <div class="qcard-grid">
+      <div class="fg"><label>Texto de la pregunta</label><input type="text" id="qtxt-${qCount}" placeholder="¿Pregunta...?" /></div>
+      <div id="qans-wrap-${qCount}">
+        <div class="fg">
+          <label>Respuesta</label>
+          <select id="qans-${qCount}">
+            <option value="1">1 — Muy insatisfecho</option>
+            <option value="2">2 — Insatisfecho</option>
+            <option value="3">3 — Neutral</option>
+            <option value="4" selected>4 — Satisfecho</option>
+            <option value="5">5 — Muy satisfecho</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  `;
+  wrap.appendChild(d);
+}
+
+function changeQType(n, tipo) {
+  const badge = document.getElementById(`qb-${n}`);
+  badge.className = `qtbadge qtb-${tipo}`;
+  badge.textContent = tipo;
+  const labels = {likert:'Respuesta Likert',porcentaje:'Porcentaje (0–100)',abierta:'Respuesta libre',binaria:'Sí / No'};
+  const wrap = document.getElementById(`qans-wrap-${n}`);
+  let html = `<div class="fg"><label>${labels[tipo]}</label>`;
+  if (tipo==='likert') {
+    html += `<select id="qans-${n}"><option value="1">1 — Muy insatisfecho</option><option value="2">2 — Insatisfecho</option><option value="3">3 — Neutral</option><option value="4" selected>4 — Satisfecho</option><option value="5">5 — Muy satisfecho</option></select>`;
+  } else if (tipo==='binaria') {
+    html += `<select id="qans-${n}"><option value="1">1 — Sí</option><option value="0">0 — No</option></select>`;
+  } else if (tipo==='porcentaje') {
+    html += `<input type="number" id="qans-${n}" min="0" max="100" step="0.5" placeholder="Ej: 65.5"/>`;
+  } else {
+    html += `<input type="text" id="qans-${n}" placeholder="Respuesta libre..."/>`;
+  }
+  html += `</div>`;
+  wrap.innerHTML = html;
+}
+
+function removeQ(n) { document.getElementById(`q-${n}`)?.remove(); }
+
+function getQuestions() {
+  const cards = document.getElementById('qs-wrap').querySelectorAll('.qcard');
+  const res = [];
+  for (const c of cards) {
+    const n = c.id.split('-')[1];
+    const tipo = document.getElementById(`qt-${n}`)?.value || 'likert';
+    const texto = document.getElementById(`qtxt-${n}`)?.value?.trim();
+    const raw = document.getElementById(`qans-${n}`)?.value;
+    if (!texto) continue;
+    let puntaje = raw;
+    if (tipo==='likert'||tipo==='binaria') puntaje=parseInt(raw);
+    else if (tipo==='porcentaje') puntaje=parseFloat(raw);
+    res.push({id_pregunta:`P${String(n).padStart(2,'0')}`,texto_pregunta:texto,tipo_pregunta:tipo,puntaje});
+  }
+  return res;
+}
+
+// ═══════════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════════
+async function submitEncuesta() {
+  const btn = document.getElementById('btn-sub');
+  const errBox = document.getElementById('err-box');
+  errBox.style.display = 'none';
+
+  const qs = getQuestions();
+  if (!qs.length) { toast('Agrega al menos una pregunta', 'warn'); return; }
+
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const edad = parseInt(document.getElementById('f-edad').value);
+  const estrato = parseInt(document.getElementById('f-estrato').value);
+  const depto = document.getElementById('f-depto').value;
+
+  if (!nombre||!edad||!estrato||!depto) {
+    toast('Completa nombre, edad, estrato y departamento', 'err'); return;
+  }
+
+  const payload = {
+    nombre_encuesta: document.getElementById('f-encuesta').value.trim() || 'Encuesta sin título',
+    encuestado: {
+      nombre, edad, estrato, departamento: depto,
+      genero: document.getElementById('f-genero').value || null,
+      nivel_educativo: document.getElementById('f-edu').value || null,
+      email: document.getElementById('f-email').value.trim() || null,
+    },
+    respuestas: qs
+  };
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>&nbsp; Validando y registrando...';
+
+  try {
+    const res = await fetch(`${API}/encuestas/`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+
+    if (res.status===201) {
+      toast('✅ Encuesta registrada exitosamente', 'ok');
+      clearForm();
+      await loadData();
+    } else {
+      const data = await res.json();
+      if (data.errores) {
+        const msgs = data.errores.map(e=>`• ${e.campo}: ${e.mensaje}`).join('\n');
+        errBox.textContent = `Error de validación HTTP 422:\n${msgs}`;
+        errBox.style.display = 'block';
+        toast('Datos inválidos — revisa los campos', 'err');
+      } else {
+        toast(data.detail || 'Error al registrar', 'err');
+      }
+    }
+  } catch(e) {
+    toast('No se pudo conectar con la API', 'err');
+  }
+  btn.disabled = false;
+  btn.innerHTML = 'Registrar Encuesta en el Sistema';
+}
+
+function clearForm() {
+  ['f-encuesta','f-nombre','f-edad','f-email'].forEach(id=>document.getElementById(id).value='');
+  ['f-estrato','f-depto','f-genero','f-edu'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('qs-wrap').innerHTML='';
+  qCount=0;
+  document.getElementById('err-box').style.display='none';
+  addQ();
+}
+
+// ═══════════════════════════════════════════
+// DATA LOADING
+// ═══════════════════════════════════════════
+async function loadData() {
+  await Promise.all([loadStats(), loadEncuestas()]);
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/encuestas/estadisticas/`);
+    const d = await res.json();
+
+    const total = d.total_encuestas || 0;
+    const edad = d.promedio_edad ? `${d.promedio_edad}` : '—';
+    const email = `${d.tasa_completitud_email ?? 0}%`;
+    const depts = Object.keys(d.distribucion_departamento||{}).length;
+
+    // Hero KPIs
+    document.getElementById('kpi-total').textContent = total;
+    document.getElementById('kpi-edad').textContent = edad;
+    document.getElementById('kpi-email').textContent = email;
+
+    // Sidebar stats
+    document.getElementById('s-total').textContent = total;
+    document.getElementById('s-edad').textContent = edad;
+    document.getElementById('s-email').textContent = email;
+    document.getElementById('s-depts').textContent = depts;
+
+    // Dashboard stats
+    document.getElementById('d-total').textContent = total;
+    document.getElementById('d-edad').textContent = edad;
+    document.getElementById('d-email2').textContent = email;
+    document.getElementById('d-depts2').textContent = depts;
+
+    // Distributions
+    renderDist('d-estrato', d.distribucion_estrato||{}, 'teal', 'Estrato ');
+    renderDist('d-depto',   d.distribucion_departamento||{}, 'gold');
+    renderDist('d-genero',  d.distribucion_genero||{}, 'teal');
+
+    document.getElementById('api-status').textContent = '● En línea';
+    document.getElementById('api-status').className = 'tb-status';
+  } catch(e) {
+    document.getElementById('api-status').textContent = '● Sin conexión';
+    document.getElementById('api-status').className = 'tb-status offline';
+  }
+}
+
+function renderDashboard() {
+  renderDist('dd-estrato', getCachedDist('estrato'), 'teal', 'Estrato ');
+  renderDist('dd-depto',   getCachedDist('depto'), 'gold');
+  renderDist('dd-genero',  getCachedDist('genero'), 'teal');
+}
+
+const distCache = {};
+function getCachedDist(key) { return distCache[key] || {}; }
+
+async function loadEncuestas() {
+  try {
+    const res = await fetch(`${API}/encuestas/`);
+    allEncuestas = await res.json();
+    renderList(allEncuestas);
+
+    // Cache dists from encuestas
+    const estratos = {}, deptos = {}, generos = {};
+    for (const e of allEncuestas) {
+      const est = String(e.encuestado.estrato);
+      const dep = e.encuestado.departamento;
+      const gen = e.encuestado.genero || 'No especificado';
+      estratos[est] = (estratos[est]||0)+1;
+      deptos[dep] = (deptos[dep]||0)+1;
+      generos[gen] = (generos[gen]||0)+1;
+    }
+    distCache['estrato'] = estratos;
+    distCache['depto'] = deptos;
+    distCache['genero'] = generos;
+  } catch(e) { console.error(e); }
+}
+
+function renderDist(id, dist, color='teal', prefix='') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const entries = Object.entries(dist).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if (!entries.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-i">📊</div><div class="empty-t">Sin datos aún</div></div>`;
+    return;
+  }
+  const max = Math.max(...entries.map(e=>e[1]));
+  el.innerHTML = entries.map(([k,v]) => `
+    <div class="drow">
+      <div class="dlabel" title="${prefix}${k}">${prefix}${k}</div>
+      <div class="dbar-w"><div class="dbar ${color}" style="width:${(v/max*100).toFixed(0)}%"></div></div>
+      <div class="dcnt">${v}</div>
+    </div>
+  `).join('');
+}
+
+function renderList(list) {
+  const el = document.getElementById('enc-list');
+  if (!list.length) {
+    el.innerHTML = `<div class="empty" style="background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:60px"><div class="empty-i">📭</div><div class="empty-t">No hay encuestas registradas.</div></div>`;
+    return;
+  }
+  el.innerHTML = [...list].reverse().map(enc => `
+    <div class="enc-item">
+      <div>
+        <div class="enc-name">${enc.nombre_encuesta}</div>
+        <div class="enc-chips">
+          <span class="chip">👤 ${enc.encuestado.nombre}</span>
+          <span class="chip teal">🗺️ ${enc.encuestado.departamento}</span>
+          <span class="chip gold">★ Estrato ${enc.encuestado.estrato}</span>
+          <span class="chip">🎂 ${enc.encuestado.edad} años</span>
+          ${enc.encuestado.nivel_educativo ? `<span class="chip violet">🎓 ${enc.encuestado.nivel_educativo}</span>` : ''}
+          <span class="chip">📝 ${enc.respuestas.length} resp.</span>
+          <span class="chip">${new Date(enc.fecha_registro).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})}</span>
+        </div>
+      </div>
+      <div class="enc-acts">
+        <button class="ibtn eye" title="Ver detalle" onclick='showDetail(${JSON.stringify(enc).replace(/'/g,"&#39;")})'>👁</button>
+        <button class="ibtn del" title="Eliminar" onclick="deleteEnc('${enc.id}')">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterList() {
+  const q = document.getElementById('search-q').value.toLowerCase();
+  const dep = document.getElementById('filter-depto').value;
+  const est = document.getElementById('filter-estrato').value;
+  const filtered = allEncuestas.filter(e => {
+    const matchQ = !q || e.nombre_encuesta.toLowerCase().includes(q) || e.encuestado.nombre.toLowerCase().includes(q) || e.encuestado.departamento.toLowerCase().includes(q);
+    const matchD = !dep || e.encuestado.departamento === dep;
+    const matchE = !est || String(e.encuestado.estrato) === est;
+    return matchQ && matchD && matchE;
+  });
+  renderList(filtered);
+}
+
+async function deleteEnc(id) {
+  if (!confirm('¿Eliminar esta encuesta permanentemente?')) return;
+  try {
+    const res = await fetch(`${API}/encuestas/${id}`, { method:'DELETE' });
+    if (res.status===204) {
+      toast('🗑 Encuesta eliminada', 'ok');
+      await loadData();
+    } else { toast('No se pudo eliminar', 'err'); }
+  } catch(e) { toast('Error de conexión', 'err'); }
+}
+
+// ═══════════════════════════════════════════
+// DETAIL MODAL
+// ═══════════════════════════════════════════
+function showDetail(enc) {
+  document.getElementById('m-title').textContent = enc.nombre_encuesta;
+  const typeColors = {likert:'var(--teal)',porcentaje:'var(--gold)',abierta:'var(--rose)',binaria:'var(--violet2)'};
+  document.getElementById('m-body').innerHTML = `
+    <div class="msec">Datos del Encuestado</div>
+    <div class="mrow"><div class="mk">Nombre</div><div class="mv">${enc.encuestado.nombre}</div></div>
+    <div class="mrow"><div class="mk">Edad</div><div class="mv">${enc.encuestado.edad} años</div></div>
+    <div class="mrow"><div class="mk">Estrato DANE</div><div class="mv">${enc.encuestado.estrato}</div></div>
+    <div class="mrow"><div class="mk">Departamento</div><div class="mv">${enc.encuestado.departamento}</div></div>
+    ${enc.encuestado.genero?`<div class="mrow"><div class="mk">Género</div><div class="mv">${enc.encuestado.genero}</div></div>`:''}
+    ${enc.encuestado.nivel_educativo?`<div class="mrow"><div class="mk">Educación</div><div class="mv">${enc.encuestado.nivel_educativo}</div></div>`:''}
+    ${enc.encuestado.email?`<div class="mrow"><div class="mk">Email</div><div class="mv">${enc.encuestado.email}</div></div>`:''}
+    <div class="msec" style="margin-top:8px">Respuestas · ${enc.respuestas.length} preguntas</div>
+    ${enc.respuestas.map(r=>`
+      <div class="mrow">
+        <div class="mk" style="font-family:var(--mono);font-size:0.78em">${r.id_pregunta}</div>
+        <div class="mv">
+          <div style="font-size:0.85em;color:var(--muted);margin-bottom:4px">${r.texto_pregunta}</div>
+          <span style="font-family:var(--mono);font-size:0.82em;background:var(--paper2);padding:2px 9px;border-radius:3px;color:var(--ink)">${r.puntaje}</span>
+          <span style="font-family:var(--mono);font-size:0.65em;color:${typeColors[r.tipo_pregunta]||'var(--muted)'};margin-left:6px;background:rgba(0,0,0,0.04);padding:2px 7px;border-radius:3px">${r.tipo_pregunta}</span>
+        </div>
+      </div>
+    `).join('')}
+    <div class="msec" style="margin-top:8px">Metadatos</div>
+    <div class="mrow"><div class="mk">UUID</div><div class="mv" style="font-family:var(--mono);font-size:0.75em;color:var(--muted);word-break:break-all">${enc.id}</div></div>
+    <div class="mrow"><div class="mk">Registrado</div><div class="mv">${new Date(enc.fecha_registro).toLocaleString('es-CO',{dateStyle:'long',timeStyle:'medium'})}</div></div>
+    <div class="mrow"><div class="mk">Estado</div><div class="mv"><span style="color:var(--teal2);font-size:0.85em">● Activa</span></div></div>
+  `;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg, type='ok') {
+  const c = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icons = {ok:'✓',err:'✕',warn:'⚠'};
+  t.innerHTML = `<span>${icons[type]||'•'}</span> ${msg}`;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 4000);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.addEventListener('load', async () => {
+  addQ();
+  await loadData();
+  setInterval(loadStats, 30000);
+});
+</script>
+</body>
+</html>
